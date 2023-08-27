@@ -1,0 +1,6 @@
+# Package Related
+/vendor
+
+# Editor related
+/.vscode
+/.idea

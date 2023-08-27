@@ -1,0 +1,19 @@
+{
+    "name": "wowpack/laravel-currency",
+    "description": "Convert currencies with peace in Laravel",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Wowpack\\LaravelCurrency\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Aimon Islam",
+            "email": "aimonext@outlook.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
