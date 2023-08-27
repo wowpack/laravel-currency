@@ -2,10 +2,11 @@
 
 namespace Wowpack\LaravelCurrency\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Wowpack\LaravelCurrency\Contracts\HasCurrency;
 use Wowpack\LaravelCurrency\Contracts\UseCurrencyValue;
 
-class Currency implements HasCurrency, UseCurrencyValue
+class Currency extends Model implements HasCurrency, UseCurrencyValue
 {
     protected $table = "currencies";
 
