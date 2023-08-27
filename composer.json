@@ -3,22 +3,33 @@
     "description": "Convert currencies with peace in Laravel",
     "type": "library",
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Wowpack\\LaravelCurrency\\": "src/"
-        }
-    },
     "authors": [
         {
             "name": "Aimon Islam",
             "email": "aimonext@outlook.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": "^8.0",
         "illuminate/container": "^8.12|^9.0|^10.0",
         "illuminate/contracts": "^8.12|^9.0|^10.0",
         "illuminate/database": "^8.12|^9.0|^10.0"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Wowpack\\LaravelCurrency\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Wowpack\\LaravelCurrency\\Providers\\"
+            ]
+        }
     }
 }
