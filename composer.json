@@ -1,6 +1,6 @@
 {
     "name": "wowpack/laravel-currency",
-    "description": "Convert currencies with peace in Laravel",
+    "description": "Effortlessly Perform Peaceful Currency Conversions in Laravel",
     "type": "library",
     "license": "MIT",
     "authors": [
