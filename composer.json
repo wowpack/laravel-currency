@@ -31,5 +31,8 @@
                 "Wowpack\\LaravelCurrency\\Providers\\"
             ]
         }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.9"
     }
 }
