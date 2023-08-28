@@ -1,6 +1,11 @@
 # Package Related
 /vendor
 
+# Package Test related
+/.phpunit.cache
+.phpunit.result.cache
+
 # Editor related
 /.vscode
 /.idea
+/.fleet
