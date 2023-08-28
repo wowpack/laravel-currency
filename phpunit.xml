@@ -5,8 +5,11 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="Package Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Feature Testing">
+            <directory>./tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Unit Testing">
+            <directory>./tests/Unit</directory>
         </testsuite>
     </testsuites>
     <source>
