@@ -20,6 +20,14 @@
     "autoload": {
         "psr-4": {
             "Wowpack\\LaravelCurrency\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Wowpack\\LaravelCurrency\\Tests\\": "tests/"
         }
     },
     "config": {
