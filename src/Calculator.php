@@ -2,8 +2,20 @@
 
 namespace Wowpack\LaravelCurrency;
 
-class Calculator extends CalculatorInterface
+use Wowpack\LaravelCurrency\Models\Currency;
+
+class Calculator extends Calculable
 {
+    protected int|float|null $value, $amount;
+
+    protected int|float|null $result_value, $result_amount;
+
+    protected bool $computed = false;
+
+    public function __construct(protected Currency $currency)
+    {
+    }
+
     protected function calculate(): static
     {
         if ($this->computed) return $this;

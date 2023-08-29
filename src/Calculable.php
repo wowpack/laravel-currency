@@ -4,17 +4,9 @@ namespace Wowpack\LaravelCurrency;
 
 use Wowpack\LaravelCurrency\Models\Currency;
 
-abstract class CalculatorInterface
+abstract class Calculable
 {
-    protected int|float|null $value, $amount;
-
-    protected int|float|null $result_value, $result_amount;
-
-    protected bool $computed = false;
-
-    public function __construct(protected Currency $currency)
-    {
-    }
+    abstract public function __construct(Currency $currency);
 
     abstract protected function calculate(): static;
 
@@ -25,8 +17,4 @@ abstract class CalculatorInterface
     abstract public function getValue(): int|float;
 
     abstract public function getAmount(): int|float;
-
-    public function __serialize()
-    {
-    }
 }
