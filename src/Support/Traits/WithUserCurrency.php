@@ -9,25 +9,16 @@ use Wowpack\LaravelCurrency\Models\Currency;
 trait WithUserCurrency
 {
     /**
-     * Guard name of the current @abstract Illuminate\Contracts\Auth\Authenticatable
+     * Guard name of the current Illuminate\Contracts\Auth\Authenticatable
      * @var string
      */
     protected string $user_guard;
 
-    /**
-     * @uses static::setupAuthDriver()
-     */
     public function __construct()
     {
-        $this->getUser();
+        $this->setupAuthDriver();
     }
 
-    /**
-     * @uses Illuminate\Support\Facades\Auth::getDefaultDriver()
-     * @property-read string $guard
-     * @property-write string $user_guard
-     * @return void
-     */
     protected function setupAuthDriver(): void
     {
         if ($this instanceof Authenticatable) {
