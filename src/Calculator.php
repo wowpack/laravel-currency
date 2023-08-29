@@ -63,18 +63,28 @@ class Calculator extends Calculable
         return $this->calculate()->result_amount;
     }
 
-    public function __serialize()
+    public function getResult(): array
     {
-        return json_encode([
-            "currency" => $this->currency,
+        return [
+            "amount" => $this->getAmount(),
+            "value" => $this->getValue(),
+        ];
+    }
+
+    public function toArray(): array
+    {
+        return [
+            "currency" => $this->currency->toArray(),
             "input" => [
                 "amount" => $this->amount,
                 "value" => $this->value,
             ],
-            "result" => [
-                "amount" => $this->getAmount(),
-                "value" => $this->getValue(),
-            ],
-        ]);
+            "result" => $this->getResult(),
+        ];
+    }
+
+    public function __serialize()
+    {
+        return json_encode($this->toArray());
     }
 }

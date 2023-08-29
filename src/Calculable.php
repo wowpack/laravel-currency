@@ -17,4 +17,10 @@ abstract class Calculable
     abstract public function getValue(): int|float;
 
     abstract public function getAmount(): int|float;
+
+    abstract public function getResult(): array;
+
+    abstract public function toArray(): array;
+
+    abstract public function __serialize(): string;
 }
