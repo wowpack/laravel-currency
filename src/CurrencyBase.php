@@ -2,6 +2,6 @@
 
 namespace Wowpack\LaravelCurrency;
 
-class Currency
+class CurrencyBase
 {
 }
