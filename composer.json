@@ -41,6 +41,10 @@
         }
     },
     "require-dev": {
-        "orchestra/testbench": "^8.9"
+        "orchestra/testbench": "^8.9",
+        "phpunit/phpunit": "^10"
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit"
     }
 }

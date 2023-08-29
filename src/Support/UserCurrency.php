@@ -19,7 +19,7 @@ class UserCurrency
 
     public function setGuardName(string|null $guard = null): static
     {
-        $this->current_user_type = $guard;
+        if (isset($guard)) $this->current_user_type = $guard;
 
         return $this;
     }
