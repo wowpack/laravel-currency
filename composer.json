@@ -45,6 +45,9 @@
         "phpunit/phpunit": "^10"
     },
     "scripts": {
-        "test": "./vendor/bin/phpunit"
+        "test": [
+            "@composer install",
+            "./vendor/bin/phpunit"
+        ]
     }
 }
