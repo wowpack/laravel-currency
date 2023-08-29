@@ -13,4 +13,6 @@ abstract class Convertible
     abstract public function getResult(): array;
 
     abstract public function toArray(): array;
+
+    abstract public function __serialize(): string;
 }
