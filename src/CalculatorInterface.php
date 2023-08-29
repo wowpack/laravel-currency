@@ -10,6 +10,8 @@ abstract class CalculatorInterface
 
     protected int|float|null $result_value, $result_amount;
 
+    protected bool $computed = false;
+
     public function __construct(protected Currency $currency)
     {
     }
@@ -23,4 +25,8 @@ abstract class CalculatorInterface
     abstract public function getValue(): int|float;
 
     abstract public function getAmount(): int|float;
+
+    public function __serialize()
+    {
+    }
 }
