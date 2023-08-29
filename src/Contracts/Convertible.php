@@ -1,6 +1,6 @@
 <?php
 
-namespace Wowpack\LaravelCurrency;
+namespace Wowpack\LaravelCurrency\Contracts;
 
 use Wowpack\LaravelCurrency\Models\Currency;
 
