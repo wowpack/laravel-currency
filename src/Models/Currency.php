@@ -18,6 +18,7 @@ class Currency extends Model implements HasCurrency, UseCurrencyValue
 
     protected $fillable = [
         "name",
+        "short_form",
         "code",
         "symbol",
         "value",
