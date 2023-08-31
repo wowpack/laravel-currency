@@ -18,6 +18,8 @@ abstract class Calculable
 
     abstract function getAmount(): int|float;
 
+    abstract function save(): bool;
+
     abstract function getResult(): array;
 
     abstract function toArray(): array;

@@ -64,6 +64,12 @@ class Calculator extends Calculable
         return $this->calculate()->result_amount;
     }
 
+    public function save(): bool
+    {
+        $this->currency->value = $this->getValue();
+        return $this->currency->save();
+    }
+
     public function getResult(): array
     {
         return [
