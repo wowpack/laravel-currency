@@ -10,13 +10,15 @@
         }
     ],
     "require": {
-        "php": "^8.0|^8.1|^8.2",
+        "php": "^8.1",
         "illuminate/container": "^8.12|^9.0|^10.0",
         "illuminate/contracts": "^8.12|^9.0|^10.0",
         "illuminate/database": "^8.12|^9.0|^10.0"
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
+    "require-dev": {
+        "orchestra/testbench": "^8.9",
+        "phpunit/phpunit": "^10.3"
+    },
     "autoload": {
         "psr-4": {
             "Wowpack\\LaravelCurrency\\": "src/"
@@ -40,13 +42,20 @@
             ]
         }
     },
-    "require-dev": {
-        "orchestra/testbench": "^8.9",
-        "phpunit/phpunit": "^10"
-    },
     "scripts": {
         "test": [
             "./vendor/bin/phpunit"
         ]
-    }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
