@@ -46,7 +46,6 @@
     },
     "scripts": {
         "test": [
-            "@composer install",
             "./vendor/bin/phpunit"
         ]
     }
