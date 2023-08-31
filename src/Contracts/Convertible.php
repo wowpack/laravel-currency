@@ -6,13 +6,15 @@ use Wowpack\LaravelCurrency\Models\Currency;
 
 abstract class Convertible
 {
-    abstract public function __construct(Currency $from, Currency $to);
+    abstract function __construct(Currency $from, Currency $to);
 
     abstract protected function calculate(Calculable $calculator): static;
 
-    abstract public function getResult(): array;
+    abstract function save(): bool;
 
-    abstract public function toArray(): array;
+    abstract function getResult(): array;
 
-    abstract public function __serialize(): string;
+    abstract function toArray(): array;
+
+    abstract function __serialize(): string;
 }
