@@ -5,7 +5,7 @@ namespace Wowpack\LaravelCurrency;
 use Wowpack\LaravelCurrency\Contracts\Calculable;
 use Wowpack\LaravelCurrency\Models\Currency;
 
-class Calculator extends Calculable
+class Calculator implements Calculable
 {
     protected int|float|null $value, $amount;
 

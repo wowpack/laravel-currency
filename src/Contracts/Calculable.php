@@ -4,25 +4,23 @@ namespace Wowpack\LaravelCurrency\Contracts;
 
 use Wowpack\LaravelCurrency\Models\Currency;
 
-abstract class Calculable
+interface Calculable
 {
-    abstract function __construct(Currency $currency);
+    function __construct(Currency $currency);
 
-    abstract protected function calculate(): static;
+    function input(int|float|null $value): static;
 
-    abstract function input(int|float|null $value): static;
+    function amount(int|float|null $value): static;
 
-    abstract function amount(int|float|null $value): static;
+    function getValue(): int|float;
 
-    abstract function getValue(): int|float;
+    function getAmount(): int|float;
 
-    abstract function getAmount(): int|float;
+    function save(): bool;
 
-    abstract function save(): bool;
+    function getResult(): array;
 
-    abstract function getResult(): array;
+    function toArray(): array;
 
-    abstract function toArray(): array;
-
-    abstract function __serialize(): string;
+    function __serialize(): string;
 }

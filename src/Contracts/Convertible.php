@@ -4,17 +4,15 @@ namespace Wowpack\LaravelCurrency\Contracts;
 
 use Wowpack\LaravelCurrency\Models\Currency;
 
-abstract class Convertible
+interface Convertible
 {
-    abstract function __construct(Currency $from, Currency $to);
+    function __construct(Currency $from, Currency $to);
 
-    abstract protected function calculate(Calculable $calculator): static;
+    function save(): bool;
 
-    abstract function save(): bool;
+    function getResult(): array;
 
-    abstract function getResult(): array;
+    function toArray(): array;
 
-    abstract function toArray(): array;
-
-    abstract function __serialize(): string;
+    function __serialize(): string;
 }
