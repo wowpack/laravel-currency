@@ -3,15 +3,15 @@
 namespace Wowpack\LaravelCurrency\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Wowpack\LaravelCurrency\CurrencyBase;
+use Wowpack\LaravelCurrency\Base;
 
 /**
- * @method \Wowpack\LaravelCurrency\Contracts\Convertible convert(\Wowpack\LaravelCurrency\Models\Currency $from, \Wowpack\LaravelCurrency\Models\Currency $to)
+ * @abstract \Wowpack\LaravelCurrency\Base
  */
 class Currency extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return CurrencyBase::class;
+        return Base::class;
     }
 }
