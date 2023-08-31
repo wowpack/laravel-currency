@@ -28,6 +28,13 @@ class Converter extends Convertible
         return $this;
     }
 
+    public function save(): bool
+    {
+        $this->to->value = $this->calculator->getValue();
+
+        return $this->to->save();
+    }
+
     public function getResult(): array
     {
         return $this->calculator->getResult();
