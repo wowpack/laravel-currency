@@ -4,6 +4,7 @@ namespace Wowpack\LaravelCurrency\Support\Traits;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use Wowpack\LaravelCurrency\Contracts\UserHasCurrency;
 use Wowpack\LaravelCurrency\Models\Currency;
 
 trait WithUserCurrency
@@ -16,6 +17,8 @@ trait WithUserCurrency
 
     public function __construct()
     {
+        if (!($this instanceof UserHasCurrency)) throw new  \Wowpack\LaravelCurrency\Exceptions\UserNotHasCurrency;
+
         $this->setupAuthDriver();
     }
 
