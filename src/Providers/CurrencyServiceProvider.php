@@ -12,8 +12,12 @@ class CurrencyServiceProvider extends ServiceProvider
     private function offerPublishes()
     {
         $this->publishes([
+            __DIR__ . "/../../config/currency.php" => config_path("currency.php"),
+        ], "currency-config");
+
+        $this->publishes([
             __DIR__ . "/../../database/migrations/create_laravel_currency_tables.php" => database_path("migrations/" . date('Y_m_d_His') . "_create_laravel_currency_tables.php"),
-        ]);
+        ], "currency-migration");
     }
 
     public function register(): void
