@@ -32,13 +32,10 @@
             "Wowpack\\LaravelCurrency\\Tests\\": "tests/"
         }
     },
-    "config": {
-        "sort-packages": true
-    },
     "extra": {
         "laravel": {
             "providers": [
-                "Wowpack\\LaravelCurrency\\Providers\\"
+                "Wowpack\\LaravelCurrency\\Providers\\CurrencyServiceProvider"
             ]
         }
     },
