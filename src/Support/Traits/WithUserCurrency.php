@@ -17,7 +17,7 @@ trait WithUserCurrency
 
     public function __construct()
     {
-        if (!($this instanceof UserHasCurrency)) throw new  \Wowpack\LaravelCurrency\Exceptions\UserNotHasCurrency;
+        if (!($this instanceof UserHasCurrency)) throw new  \Wowpack\LaravelCurrency\Exceptions\UserDoesNotHaveCurrency();
 
         $this->setupAuthDriver();
     }

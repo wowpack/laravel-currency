@@ -28,7 +28,7 @@ class Currency extends Model implements HasCurrency, UseCurrencyValue
         "value" => ConvertCurrency::class,
     ];
 
-    public function getCurrencyValueColumn(): string
+    public function getCurrencyAttribute(): string
     {
         return "value";
     }
