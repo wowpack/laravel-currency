@@ -11,5 +11,5 @@ interface Base
 
     function convert(Currency $from, Currency $to): Convertible;
 
-    function create(array $data): Currency;
+    function create(...$data): Currency;
 }

@@ -22,10 +22,19 @@ class CurrencyBase implements Base
         return new Converter($from, $to);
     }
 
-    public function create(array $data): Currency
+    public function create(...$data): Currency
     {
         $data = collect($data);
 
-        return Currency::with([])->firstOrCreate($data->keys()->toArray(), $data->values()->toArray());
+        return Currency::with([])->where($data->only(["name", "code"]))->firstOr("*", function () use ($data) {
+            $currency = new Currency();
+            $currency->name = $data->name;
+            $currency->short_name = $data->short_name;
+            $currency->code = $data->code;
+            $currency->symbol = $data->symbol;
+            $currency->value = $data->amount;
+            $currency->save();
+            return $currency;
+        });
     }
 }
