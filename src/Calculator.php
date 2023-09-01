@@ -90,8 +90,8 @@ class Calculator implements Calculable
         ];
     }
 
-    public function __serialize()
+    public function __serialize(): array
     {
-        return json_encode($this->toArray());
+        return $this->toArray();
     }
 }

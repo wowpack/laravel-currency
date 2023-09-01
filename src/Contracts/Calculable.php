@@ -22,5 +22,5 @@ interface Calculable
 
     function toArray(): array;
 
-    function __serialize(): string;
+    function __serialize(): array;
 }

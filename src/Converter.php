@@ -48,8 +48,8 @@ class Converter implements Convertible
         ];
     }
 
-    public function __serialize(): string
+    public function __serialize(): array
     {
-        return json_encode($this->toArray());
+        return $this->toArray();
     }
 }

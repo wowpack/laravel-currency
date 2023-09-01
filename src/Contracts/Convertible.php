@@ -14,5 +14,5 @@ interface Convertible
 
     function toArray(): array;
 
-    function __serialize(): string;
+    function __serialize(): array;
 }
