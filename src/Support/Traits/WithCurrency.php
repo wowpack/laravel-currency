@@ -2,6 +2,7 @@
 
 namespace Wowpack\LaravelCurrency\Support\Traits;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Wowpack\LaravelCurrency\Contracts\HasCurrency;
 use Wowpack\LaravelCurrency\Models\Currency;
 
@@ -14,6 +15,11 @@ trait WithCurrency
         if (!($this instanceof HasCurrency)) throw new \Wowpack\LaravelCurrency\Exceptions\ModelDoesNotHaveCurrency();
 
         $this->model_type = static::class;
+    }
+
+    public function currencies(): BelongsToMany
+    {
+        return $this->morphToMany(Currency::class, "model", "model_has_currencies", "model_id", "currency_id");
     }
 
     public function assignCurrency(Currency $currency)
