@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create("currencies", function (Blueprint $table) {
             $table->id();
             $table->string("name")->unique();
-            $table->string("short_form")->unique()->nullable();
+            $table->string("short_form")->nullable();
             $table->string("code")->unique();
             $table->string("symbol")->nullable();
             $table->decimal("value")->default(0);
@@ -20,15 +20,13 @@ return new class extends Migration
 
         Schema::create("user_has_currencies", function (Blueprint $table) {
             $table->id();
-            $table->string("guard_name");
-            $table->unsignedBigInteger("user_id");
+            $table->morphs("user");
             $table->foreignId("currency_id")->references("id")->on("currencies")->cascadeOnDelete();
         });
 
         Schema::create("model_has_currencies", function (Blueprint $table) {
             $table->id();
-            $table->string("model_type");
-            $table->unsignedBigInteger("model_id");
+            $table->morphs("model");
             $table->foreignId("currency_id")->references("id")->on("currencies")->cascadeOnDelete();
         });
     }
