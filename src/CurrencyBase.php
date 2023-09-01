@@ -2,6 +2,7 @@
 
 namespace Wowpack\LaravelCurrency;
 
+use Wowpack\LaravelCurrency\Contracts\Base;
 use Wowpack\LaravelCurrency\Contracts\Convertible;
 use Wowpack\LaravelCurrency\Models\Currency;
 
