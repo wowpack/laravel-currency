@@ -1,5 +1,7 @@
 <?php
 
+namespace Wowpack\LaravelCurrency\Providers;
+
 use Illuminate\Support\ServiceProvider;
 use Wowpack\LaravelCurrency\Base;
 use Wowpack\LaravelCurrency\CurrencyBase;
