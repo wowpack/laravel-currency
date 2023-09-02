@@ -19,7 +19,7 @@ trait WithUserCurrency
         return $this->morphToMany(Currency::class, "user", "user_has_currencies", "user_id", "currency_id");
     }
 
-    public function setUserCurrency(Currency $currency)
+    public function setCurrency(Currency $currency)
     {
         $this->removeUserCurrency($currency);
 
@@ -28,14 +28,14 @@ trait WithUserCurrency
         return $this;
     }
 
-    public function removeUserCurrency(Currency|null $currency)
+    public function removeCurrency(Currency|null $currency)
     {
         if (isset($currency)) return $this->currencies()->detach($currency);
 
         return $this->currencies()->detach();
     }
 
-    public function getUserCurrency(): Currency
+    public function getCurrency(): Currency
     {
         return $this->currencies()->first() ?? Currency::first();
     }
