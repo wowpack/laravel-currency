@@ -3,18 +3,17 @@
 namespace Wowpack\LaravelCurrency\Support\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Wowpack\LaravelCurrency\Casts\ConvertCurrency;
 use Wowpack\LaravelCurrency\Contracts\HasCurrency;
 use Wowpack\LaravelCurrency\Models\Currency;
 
 trait WithCurrency
 {
-    protected string $model_type;
-
     public function __construct()
     {
         if (!($this instanceof HasCurrency)) throw new \Wowpack\LaravelCurrency\Exceptions\ModelDoesNotHaveCurrency();
 
-        $this->model_type = static::class;
+        $this->casts = collect($this->casts)->put($this->getCurrencyAttribute(), ConvertCurrency::class);
     }
 
     public function currencies(): BelongsToMany
