@@ -21,7 +21,7 @@ trait WithUserCurrency
 
     public function setCurrency(Currency $currency)
     {
-        $this->removeUserCurrency($currency);
+        if ($this->getCurrency()) $this->removeUserCurrency();
 
         $this->currencies()->attach($currency);
 
@@ -35,8 +35,8 @@ trait WithUserCurrency
         return $this->currencies()->detach();
     }
 
-    public function getCurrency(): Currency
+    public function getCurrency(): Currency|null
     {
-        return $this->currencies()->first() ?? Currency::first();
+        return $this->currencies()->first();
     }
 }
