@@ -3,15 +3,17 @@
 namespace Wowpack\LaravelCurrency\Support;
 
 use Illuminate\Database\Eloquent\Model;
+use Wowpack\LaravelCurrency\Calculator;
 use Wowpack\LaravelCurrency\Contracts\Castable;
 use Wowpack\LaravelCurrency\Contracts\HasCurrency;
 use Wowpack\LaravelCurrency\Contracts\UseCurrencyValue;
+use Wowpack\LaravelCurrency\Converter;
 use Wowpack\LaravelCurrency\Models\Currency;
 use Wowpack\LaravelCurrency\Support\Facades\Currency as CurrencyFacade;
 
 class CurrencyCasting implements Castable
 {
-    protected HasCurrency $model;
+    protected $model;
 
     protected Currency $user_currency;
 
@@ -28,14 +30,17 @@ class CurrencyCasting implements Castable
 
     protected function calculate(): static
     {
-        $attribute = $this->model->getCurrencyAttribute();
-        $value = $this->model->$attribute;
-
         if ($this->model instanceof HasCurrency) {
+            $calculator = new Calculator($this->user_currency);
             if ($this->model instanceof UseCurrencyValue) {
+                $calculator->input($this->input);
             } else {
+                $calculator->input((new Calculator($this->model->currency()))->input($this->input)->getValue());
             }
+            $this->result_amount = $calculator->getAmount();
+            $this->result_value = $calculator->getValue();
         } else {
+            throw new \Exception;
         }
 
         return $this;
