@@ -16,11 +16,11 @@ return [
         "model_currency_morph_key" => "model_id",
     ],
     "relations" => [
-        "user_currency" => "one",
-        "model_currency" => "one",
+        "user_multi_currency" => false,
+        "model_multi_currency" => false,
     ],
-    "cache" => "true",
     "providers" => [
         \Wowpack\LaravelCurrency\Providers\CurrencyServiceProvider::class,
     ],
+    "cache" => false,
 ];
