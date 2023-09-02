@@ -28,7 +28,7 @@ trait WithUserCurrency
         return $this;
     }
 
-    public function removeCurrency(Currency|null $currency)
+    public function removeCurrency(Currency|null $currency = null)
     {
         if (isset($currency)) return $this->currencies()->detach($currency);
 
