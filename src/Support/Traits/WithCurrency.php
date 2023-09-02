@@ -22,15 +22,23 @@ trait WithCurrency
         return $this->morphToMany(Currency::class, "model", "model_has_currencies", "model_id", "currency_id");
     }
 
-    public function assignCurrency(Currency $currency)
+    public function setCurrency(Currency $currency)
     {
+        if ($this->getCurrency()) $this->removeUserCurrency();
+
+        $this->currencies()->attach($currency);
+
+        return $this;
     }
 
-    public function revokeCurrency(Currency $currency)
+    public function removeCurrency(Currency|null $currency = null)
     {
+        if (isset($currency)) return $this->currencies()->detach($currency);
+
+        return $this->currencies()->detach();
     }
 
-    public function getCurrency(Currency $currency)
+    public function getCurrency(): Currency|null
     {
         return $this->currencies()->first();
     }
