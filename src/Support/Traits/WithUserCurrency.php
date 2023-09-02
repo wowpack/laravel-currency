@@ -19,14 +19,20 @@ trait WithUserCurrency
         return $this->morphToMany(Currency::class, "user", "user_has_currencies", "user_id", "currency_id");
     }
 
-    public function setUserCurrency(Currency $currency): bool
+    public function setUserCurrency(Currency $currency)
     {
-        return true;
+        $this->removeUserCurrency($currency);
+
+        $this->currencies()->attach($currency);
+
+        return $this;
     }
 
-    public function removeUserCurrency(Currency $currency): bool
+    public function removeUserCurrency(Currency|null $currency)
     {
-        return true;
+        if (isset($currency)) return $this->currencies()->detach($currency);
+
+        return $this->currencies()->detach();
     }
 
     public function getUserCurrency(): Currency
