@@ -32,6 +32,6 @@ trait WithCurrency
 
     public function getCurrency(Currency $currency)
     {
-        return $this->model_type;
+        return $this->currencies()->first();
     }
 }

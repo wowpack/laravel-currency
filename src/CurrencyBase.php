@@ -5,22 +5,9 @@ namespace Wowpack\LaravelCurrency;
 use Wowpack\LaravelCurrency\Contracts\Base;
 use Wowpack\LaravelCurrency\Contracts\Convertible;
 use Wowpack\LaravelCurrency\Models\Currency;
-use Wowpack\LaravelCurrency\Support\UserCurrency;
 
 class CurrencyBase implements Base
 {
-    protected UserCurrency $userCurrency;
-
-    public function __construct()
-    {
-        $this->userCurrency = app(UserCurrency::class);
-    }
-
-    public function getUserCurrency($guard = null): Currency
-    {
-        return Currency::get();
-    }
-
     public function convert(Currency $from, Currency $to): Convertible
     {
         return new Converter($from, $to);
@@ -40,17 +27,5 @@ class CurrencyBase implements Base
             $currency->save();
             return $currency;
         });
-    }
-
-    public function guard(string|null $name = null): static
-    {
-        $this->userCurrency->setGuardName($name);
-
-        return $this;
-    }
-
-    public function currentGuard(): string
-    {
-        return $this->userCurrency->getGuardName();
     }
 }
