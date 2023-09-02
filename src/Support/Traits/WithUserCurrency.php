@@ -6,12 +6,17 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Wowpack\LaravelCurrency\Contracts\UserHasCurrency;
 use Wowpack\LaravelCurrency\Models\Currency;
+use Wowpack\LaravelCurrency\Support\Facades\Currency as CurrencyFacade;
 
 trait WithUserCurrency
 {
     public function __construct()
     {
-        if (!($this instanceof Authenticatable && $this instanceof UserHasCurrency)) throw new  \Wowpack\LaravelCurrency\Exceptions\UserDoesNotHaveCurrency();
+        if (!($this instanceof Authenticatable && $this instanceof UserHasCurrency)) {
+            throw new  \Wowpack\LaravelCurrency\Exceptions\UserDoesNotHaveCurrency();
+        } else {
+            CurrencyFacade::user($this->guard);
+        }
     }
 
     public function currencies(): BelongsToMany

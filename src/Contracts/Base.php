@@ -10,4 +10,8 @@ interface Base
     function convert(Currency $from, Currency $to): Convertible;
 
     function create(...$data): Currency;
+
+    function user(string|null $guard);
+
+    function getDefaultCurrency(): Currency;
 }
