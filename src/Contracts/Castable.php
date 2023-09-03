@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 interface Castable
 {
-    public function __construct(Model $model);
+    function __construct(Model $model);
 
-    public function input(float|int $value): static;
+    function input(float|int $value): static;
 
-    public function getAmount(): int|float;
+    function getAmount(): int|float;
 
-    public function getValue(): int|float;
+    function getValue(): int|float;
 }

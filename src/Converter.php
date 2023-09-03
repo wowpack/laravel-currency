@@ -10,20 +10,29 @@ class Converter implements Convertible
 {
     protected Calculable $calculator;
 
+    protected float|int $amount;
+
     protected bool $computed = false;
 
     public function __construct(protected Currency $from, protected Currency $to)
     {
         $this->calculator = new Calculator($to);
 
-        $this->calculate($this->calculator);
+        $this->calculate();
     }
 
-    protected function calculate(Calculable $calculator): static
+    protected function calculate(): static
     {
         if ($this->computed) return $this;
 
-        $this->calculator->input($this->from->value);
+        $this->calculator->input($this->from->value * $this->amount);
+
+        return $this;
+    }
+
+    public function amount(float|int $amount = 1): static
+    {
+        $this->amount = $amount;
 
         return $this;
     }
