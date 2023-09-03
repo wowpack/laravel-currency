@@ -15,7 +15,7 @@ trait WithUserCurrency
         if (!($this instanceof Authenticatable && $this instanceof UserHasCurrency)) {
             throw new  \Wowpack\LaravelCurrency\Exceptions\UserDoesNotHaveCurrency();
         } else {
-            CurrencyFacade::user($this->guard);
+            if (auth($this->guard)->check()) CurrencyFacade::user($this->guard);
         }
     }
 
