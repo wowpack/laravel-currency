@@ -2,19 +2,19 @@
 
 namespace Wowpack\LaravelCurrency\Support\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Wowpack\LaravelCurrency\Casts\ConvertCurrency;
 use Wowpack\LaravelCurrency\Contracts\HasCurrency;
 use Wowpack\LaravelCurrency\Models\Currency;
 
 trait WithCurrency
 {
-    protected string $model_type;
-
     public function __construct()
     {
         if (!($this instanceof HasCurrency)) throw new \Wowpack\LaravelCurrency\Exceptions\ModelDoesNotHaveCurrency();
 
-        $this->model_type = static::class;
+        $this->casts = collect($this->casts)->put($this->getCurrencyAttribute(), ConvertCurrency::class);
     }
 
     public function currencies(): BelongsToMany
@@ -41,5 +41,29 @@ trait WithCurrency
     public function getCurrency(): Currency|null
     {
         return $this->currencies()->first();
+    }
+
+    protected static function booted()
+    {
+        static::created(function (Model $model) {
+        });
+
+        static::updating(function (Model $model) {
+        });
+
+        static::updated(function (Model $model) {
+        });
+
+        static::saving(function (Model $model) {
+        });
+
+        static::saved(function (Model $model) {
+        });
+
+        static::deleting(function (Model $model) {
+        });
+
+        static::deleted(function (Model $model) {
+        });
     }
 }
