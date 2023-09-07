@@ -23,10 +23,10 @@ class Calculator implements Calculable
 
         elseif (isset($this->value)) {
             $this->result_value = $this->value;
-            $this->result_amount = $this->value / $this->currency->value;
+            $this->result_amount = $this->value / $this->currency->getAttributes()[$this->currency->getCurrencyAttribute()];
         } elseif (isset($this->amount)) {
             $this->result_amount = $this->amount;
-            $this->result_value = $this->amount * $this->currency->value;
+            $this->result_value = $this->amount * $this->currency->getAttributes()[$this->currency->getCurrencyAttribute()];
         } else {
             throw new \InvalidArgumentException("No value/amount provided");
         }
