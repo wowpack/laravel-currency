@@ -5,7 +5,6 @@ namespace Wowpack\LaravelCurrency\Providers;
 use Illuminate\Support\ServiceProvider;
 use Wowpack\LaravelCurrency\Base;
 use Wowpack\LaravelCurrency\CurrencyBase;
-use Wowpack\LaravelCurrency\Support\UserCurrency;
 
 class CurrencyServiceProvider extends ServiceProvider
 {
@@ -24,7 +23,9 @@ class CurrencyServiceProvider extends ServiceProvider
     {
         $this->app->bind(Base::class, fn () => new CurrencyBase);
 
-        $this->app->singleton(UserCurrency::class, fn () => new UserCurrency);
+        $this->app->macro("currency", fn () => app(Base::class));
+
+        $this->app->macro("defaultCurrency", fn (string|null $guard = null) => app()->currency()->getDefaultCurrency($guard));
     }
 
     public function boot(): void

@@ -20,13 +20,12 @@ class Calculator implements Calculable
     protected function calculate(): static
     {
         if ($this->computed) return $this;
-
         elseif (isset($this->value)) {
             $this->result_value = $this->value;
-            $this->result_amount = $this->value / $this->currency->value;
+            $this->result_amount = $this->value / $this->currency->getRawOriginal($this->currency->getCurrencyAttribute());
         } elseif (isset($this->amount)) {
             $this->result_amount = $this->amount;
-            $this->result_value = $this->amount * $this->currency->value;
+            $this->result_value = $this->amount * $this->currency->getRawOriginal($this->currency->getCurrencyAttribute());
         } else {
             throw new \InvalidArgumentException("No value/amount provided");
         }
@@ -66,7 +65,10 @@ class Calculator implements Calculable
 
     public function save(): bool
     {
-        $this->currency->value = $this->getValue();
+        $this->currency->setRawAttributes([
+            $this->currency->getCurrencyAttribute() => $this->getValue()
+        ], true);
+
         return $this->currency->save();
     }
 

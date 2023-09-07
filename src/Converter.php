@@ -17,29 +17,31 @@ class Converter implements Convertible
     public function __construct(protected Currency $from, protected Currency $to)
     {
         $this->calculator = new Calculator($to);
-
         $this->calculate();
     }
 
     protected function calculate(): static
     {
-        if ($this->computed) return $this;
-
-        $this->calculator->input($this->from->value * $this->amount);
-
+        if (!$this->computed) {
+            $value = $this->from->getRawOriginal(
+                $this->from->getCurrencyAttribute()
+            );
+            $this->calculator->input($value * $this->amount);
+        }
         return $this;
     }
 
     public function amount(float|int $amount = 1): static
     {
         $this->amount = $amount;
-
         return $this;
     }
 
     public function save(): bool
     {
-        $this->to->value = $this->calculator->getValue();
+        $this->to->setRawAttributes([
+            $this->to->getCurrencyAttribute() => $this->calculator->getValue()
+        ], true);
 
         return $this->to->save();
     }
