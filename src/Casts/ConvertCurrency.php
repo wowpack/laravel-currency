@@ -23,7 +23,7 @@ class ConvertCurrency implements CastsAttributes
     {
         if ($model instanceof UseCurrencyValue) {
             $calculator = app()->make(Calculator::class, [$this->current]);
-            $calculator->input($value);
+            $calculator->input($model->getRawOriginal($key));
             return $calculator->getAmount();
         } else {
             $converter = app()->make(Converter::class, [$model->getCurrency(), $this->current]);
