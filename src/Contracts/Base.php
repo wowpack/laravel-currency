@@ -11,7 +11,5 @@ interface Base
 
     function create(...$data): Currency;
 
-    function user(string|null $guard);
-
-    function getDefaultCurrency(): Currency;
+    function getDefaultCurrency(string|null $guard): Currency;
 }

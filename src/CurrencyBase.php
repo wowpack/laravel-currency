@@ -2,14 +2,15 @@
 
 namespace Wowpack\LaravelCurrency;
 
+use Illuminate\Support\Facades\Auth;
 use Wowpack\LaravelCurrency\Contracts\Base;
 use Wowpack\LaravelCurrency\Contracts\Convertible;
+use Wowpack\LaravelCurrency\Contracts\UserHasCurrency;
 use Wowpack\LaravelCurrency\Models\Currency;
-use Wowpack\LaravelCurrency\Support\UserCurrency;
 
 class CurrencyBase implements Base
 {
-    protected UserCurrency $userCurrency;
+    protected Currency $defaultCurrency;
 
     public function convert(Currency $from, Currency $to): Convertible
     {
@@ -18,28 +19,29 @@ class CurrencyBase implements Base
 
     public function create(...$data): Currency
     {
-        $data = collect($data);
-
-        return Currency::with([])->where($data->only(["name", "code"]))->firstOr("*", function () use ($data) {
-            $currency = new Currency();
-            $currency->name = $data->name;
-            $currency->short_name = $data->short_name;
-            $currency->code = $data->code;
-            $currency->symbol = $data->symbol;
-            $currency->value = $data->amount;
-            $currency->save();
-            return $currency;
-        });
+        return Currency::create($data);
     }
 
-    public function user(string|null $guard = null)
+    public function getDefaultCurrency(string $guard = null): Currency
     {
-        $this->userCurrency = app(UserCurrency::class)->guard($guard);
-        return $this->userCurrency;
-    }
+        if (!isset($this->defaultCurrency)) {
+            $this->defaultCurrency = Currency::first();
+            $auth = Auth::guard($guard);
 
-    public function getDefaultCurrency(): Currency
-    {
-        return $this->userCurrency->currency() ?? Currency::first();
+            if (isset($guard) && $auth->check())  $this->defaultCurrency = $auth->user()->getCurrency();
+
+            else {
+                foreach (array_keys(config("auth.guards")) as $name) {
+                    $auth = Auth::guard($name);
+
+                    if ($auth->check() && $auth->user() instanceof UserHasCurrency) {
+                        $this->defaultCurrency = $auth->user()->getCurrency();
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $this->defaultCurrency;
     }
 }
