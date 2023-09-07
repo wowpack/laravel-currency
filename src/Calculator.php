@@ -68,7 +68,7 @@ class Calculator implements Calculable
     {
         $this->currency->setRawAttributes([
             $this->currency->getCurrencyAttribute() => $this->getValue()
-        ]);
+        ], true);
 
         return $this->currency->save();
     }

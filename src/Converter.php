@@ -16,8 +16,7 @@ class Converter implements Convertible
 
     public function __construct(protected Currency $from, protected Currency $to)
     {
-        $this->calculator = new Calculator($to);
-
+        $this->calculator = app()->make(Calculator::class, [$to]);
         $this->calculate();
     }
 
@@ -25,7 +24,7 @@ class Converter implements Convertible
     {
         if ($this->computed) return $this;
 
-        $this->calculator->input($this->from->value * $this->amount);
+        $this->calculator->input($this->from->getRawOriginal($this->from->getCurrencyAttribute()) * $this->amount);
 
         return $this;
     }
@@ -33,13 +32,14 @@ class Converter implements Convertible
     public function amount(float|int $amount = 1): static
     {
         $this->amount = $amount;
-
         return $this;
     }
 
     public function save(): bool
     {
-        $this->to->value = $this->calculator->getValue();
+        $this->to->setRawAttributes([
+            $this->to->getCurrencyAttribute() => $this->calculator->getValue()
+        ], true);
 
         return $this->to->save();
     }
