@@ -14,7 +14,7 @@ trait WithCurrency
     {
         if (!($this instanceof HasCurrency)) throw new \Wowpack\LaravelCurrency\Exceptions\ModelDoesNotHaveCurrency();
 
-        $this->casts = collect($this->casts)->put($this->getCurrencyAttribute(), ConvertCurrency::class);
+        $this->casts = collect($this->casts)->put($this->getCurrencyAttribute(), ConvertCurrency::class)->toArray();
     }
 
     public function currencies(): BelongsToMany
