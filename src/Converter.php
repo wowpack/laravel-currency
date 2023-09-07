@@ -16,16 +16,18 @@ class Converter implements Convertible
 
     public function __construct(protected Currency $from, protected Currency $to)
     {
-        $this->calculator = app()->make(Calculator::class, [$to]);
+        $this->calculator = new Calculator($to);
         $this->calculate();
     }
 
     protected function calculate(): static
     {
-        if ($this->computed) return $this;
-
-        $this->calculator->input($this->from->getRawOriginal($this->from->getCurrencyAttribute()) * $this->amount);
-
+        if (!$this->computed) {
+            $value = $this->from->getRawOriginal(
+                $this->from->getCurrencyAttribute()
+            );
+            $this->calculator->input($value * $this->amount);
+        }
         return $this;
     }
 

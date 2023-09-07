@@ -20,7 +20,6 @@ class Calculator implements Calculable
     protected function calculate(): static
     {
         if ($this->computed) return $this;
-
         elseif (isset($this->value)) {
             $this->result_value = $this->value;
             $this->result_amount = $this->value / $this->currency->getRawOriginal($this->currency->getCurrencyAttribute());

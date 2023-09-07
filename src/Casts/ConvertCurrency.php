@@ -5,6 +5,7 @@ namespace Wowpack\LaravelCurrency\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Wowpack\LaravelCurrency\Calculator;
+use Wowpack\LaravelCurrency\Contracts\HasCurrency;
 use Wowpack\LaravelCurrency\Contracts\UseCurrencyValue;
 use Wowpack\LaravelCurrency\Converter;
 use Wowpack\LaravelCurrency\Models\Currency;
@@ -21,12 +22,14 @@ class ConvertCurrency implements CastsAttributes
 
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        if ($model instanceof UseCurrencyValue) {
-            $calculator = app()->make(Calculator::class, [$this->current]);
-            $calculator->input($model->getRawOriginal($key));
+        if (!($model instanceof HasCurrency) && $model->getCurrencyAttribute() != $key) {
+            throw new \Exception();
+        } elseif ($model instanceof UseCurrencyValue) {
+            $calculator = new Calculator($this->current);
+            $calculator->input($value);
             return $calculator->getAmount();
         } else {
-            $converter = app()->make(Converter::class, [$model->getCurrency(), $this->current]);
+            $converter = new Converter($model->getCurrency(), $this->current);
             $converter->amount($value);
             return $converter->getResult()["amount"];
         }
@@ -34,12 +37,14 @@ class ConvertCurrency implements CastsAttributes
 
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        if ($model instanceof UseCurrencyValue) {
-            $calculator = app()->make(Calculator::class, [$this->current]);
+        if (!($model instanceof HasCurrency) && $model->getCurrencyAttribute() != $key) {
+            throw new \Exception();
+        } elseif ($model instanceof UseCurrencyValue) {
+            $calculator = new Calculator($this->current);
             $calculator->amount($value);
             return $calculator->getValue();
         } else {
-            $converter = app()->make(Converter::class, [$this->current, $model->getCurrency()]);
+            $converter = new Converter($this->current, $model->getCurrency());
             $converter->amount($value);
             return $converter->getResult()["amount"];
         }
