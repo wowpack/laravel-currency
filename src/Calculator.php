@@ -7,9 +7,13 @@ use Wowpack\LaravelCurrency\Models\Currency;
 
 class Calculator implements Calculable
 {
-    protected int|float|null $value, $amount;
+    protected int|float|null $value;
 
-    protected int|float|null $result_value, $result_amount;
+    protected int|float|null $amount;
+
+    protected int|float|null $result_value;
+
+    protected int|float|null $result_amount;
 
     protected bool $computed = false;
 
@@ -19,15 +23,16 @@ class Calculator implements Calculable
 
     protected function calculate(): static
     {
-        if ($this->computed) return $this;
-        elseif (isset($this->value)) {
+        if ($this->computed) {
+            return $this;
+        } elseif (isset($this->value)) {
             $this->result_value = $this->value;
             $this->result_amount = $this->value / $this->currency->getRawOriginal($this->currency->getCurrencyAttribute());
         } elseif (isset($this->amount)) {
             $this->result_amount = $this->amount;
             $this->result_value = $this->amount * $this->currency->getRawOriginal($this->currency->getCurrencyAttribute());
         } else {
-            throw new \InvalidArgumentException("No value/amount provided");
+            throw new \InvalidArgumentException('No value/amount provided');
         }
 
         return $this;
@@ -66,7 +71,7 @@ class Calculator implements Calculable
     public function save(): bool
     {
         $this->currency->setRawAttributes([
-            $this->currency->getCurrencyAttribute() => $this->getValue()
+            $this->currency->getCurrencyAttribute() => $this->getValue(),
         ], true);
 
         return $this->currency->save();
@@ -75,20 +80,20 @@ class Calculator implements Calculable
     public function getResult(): array
     {
         return [
-            "amount" => $this->getAmount(),
-            "value" => $this->getValue(),
+            'amount' => $this->getAmount(),
+            'value' => $this->getValue(),
         ];
     }
 
     public function toArray(): array
     {
         return [
-            "currency" => $this->currency->toArray(),
-            "input" => [
-                "amount" => $this->amount,
-                "value" => $this->value,
+            'currency' => $this->currency->toArray(),
+            'input' => [
+                'amount' => $this->amount,
+                'value' => $this->value,
             ],
-            "result" => $this->getResult(),
+            'result' => $this->getResult(),
         ];
     }
 

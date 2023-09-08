@@ -6,15 +6,15 @@ use Wowpack\LaravelCurrency\Models\Currency;
 
 interface Convertible
 {
-    function __construct(Currency $from, Currency $to);
+    public function __construct(Currency $from, Currency $to);
 
-    function amount(float|int $amount): static;
+    public function amount(float|int $amount): static;
 
-    function save(): bool;
+    public function save(): bool;
 
-    function getResult(): array;
+    public function getResult(): array;
 
-    function toArray(): array;
+    public function toArray(): array;
 
-    function __serialize(): array;
+    public function __serialize(): array;
 }
