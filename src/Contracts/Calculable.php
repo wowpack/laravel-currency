@@ -6,21 +6,21 @@ use Wowpack\LaravelCurrency\Models\Currency;
 
 interface Calculable
 {
-    function __construct(Currency $currency);
+    public function __construct(Currency $currency);
 
-    function input(int|float|null $value): static;
+    public function input(int|float|null $value): static;
 
-    function amount(int|float|null $value): static;
+    public function amount(int|float|null $value): static;
 
-    function getValue(): int|float;
+    public function getValue(): int|float;
 
-    function getAmount(): int|float;
+    public function getAmount(): int|float;
 
-    function save(): bool;
+    public function save(): bool;
 
-    function getResult(): array;
+    public function getResult(): array;
 
-    function toArray(): array;
+    public function toArray(): array;
 
-    function __serialize(): array;
+    public function __serialize(): array;
 }

@@ -2,14 +2,13 @@
 
 namespace Wowpack\LaravelCurrency\Contracts;
 
-use Wowpack\LaravelCurrency\Contracts\Convertible;
 use Wowpack\LaravelCurrency\Models\Currency;
 
 interface Base
 {
-    function convert(Currency $from, Currency $to): Convertible;
+    public function convert(Currency $from, Currency $to): Convertible;
 
-    function create(...$data): Currency;
+    public function create(...$data): Currency;
 
-    function getDefaultCurrency(string|null $guard): Currency;
+    public function getDefaultCurrency(?string $guard): Currency;
 }

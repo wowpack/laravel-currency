@@ -11,20 +11,20 @@ class Currency extends Model implements HasCurrency, UseCurrencyValue
 {
     use WithCurrency;
 
-    protected $table = "currencies";
+    protected $table = 'currencies';
 
-    protected $primaryKey = "id";
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-        "name",
-        "short_form",
-        "code",
-        "symbol",
-        "value",
+        'name',
+        'short_form',
+        'code',
+        'symbol',
+        'value',
     ];
 
     public function getCurrencyAttribute(): string
     {
-        return "value";
+        return 'value';
     }
 }

@@ -24,14 +24,14 @@ class CurrencyBase implements Base
 
     public function getDefaultCurrency(string $guard = null): Currency
     {
-        if (!isset($this->defaultCurrency)) {
+        if (! isset($this->defaultCurrency)) {
             $this->defaultCurrency = Currency::first();
             $auth = Auth::guard($guard);
 
-            if (isset($guard) && $auth->check())  $this->defaultCurrency = $auth->user()->getCurrency() ?? $this->defaultCurrency;
-
-            else {
-                foreach (array_keys(config("auth.guards")) as $name) {
+            if (isset($guard) && $auth->check()) {
+                $this->defaultCurrency = $auth->user()->getCurrency() ?? $this->defaultCurrency;
+            } else {
+                foreach (array_keys(config('auth.guards')) as $name) {
                     $auth = Auth::guard($name);
 
                     if ($auth->check() && $auth->user() instanceof UserHasCurrency) {

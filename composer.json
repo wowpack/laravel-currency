@@ -16,6 +16,7 @@
         "illuminate/database": "^8.12|^9.0|^10.0"
     },
     "require-dev": {
+        "laravel/pint": "^1.13",
         "orchestra/testbench": "^8.9",
         "phpunit/phpunit": "^10.3"
     },
@@ -42,6 +43,9 @@
     "scripts": {
         "test": [
             "./vendor/bin/phpunit"
+        ],
+        "format": [
+            "./vendor/bin/pint"
         ]
     },
     "config": {

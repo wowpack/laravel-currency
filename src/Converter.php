@@ -22,25 +22,27 @@ class Converter implements Convertible
 
     protected function calculate(): static
     {
-        if (!$this->computed) {
+        if (! $this->computed) {
             $value = $this->from->getRawOriginal(
                 $this->from->getCurrencyAttribute()
             );
             $this->calculator->input($value * $this->amount);
         }
+
         return $this;
     }
 
     public function amount(float|int $amount = 1): static
     {
         $this->amount = $amount;
+
         return $this;
     }
 
     public function save(): bool
     {
         $this->to->setRawAttributes([
-            $this->to->getCurrencyAttribute() => $this->calculator->getValue()
+            $this->to->getCurrencyAttribute() => $this->calculator->getValue(),
         ], true);
 
         return $this->to->save();
@@ -54,8 +56,8 @@ class Converter implements Convertible
     public function toArray(): array
     {
         return [
-            "currency" => $this->to->toArray(),
-            "result" => $this->getResult(),
+            'currency' => $this->to->toArray(),
+            'result' => $this->getResult(),
         ];
     }
 

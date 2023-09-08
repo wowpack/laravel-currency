@@ -12,33 +12,39 @@ trait WithCurrency
 {
     public function __construct()
     {
-        if (!($this instanceof Model && $this instanceof HasCurrency)) throw new \Wowpack\LaravelCurrency\Exceptions\ModelDoesNotHaveCurrency();
+        if (! ($this instanceof Model && $this instanceof HasCurrency)) {
+            throw new \Wowpack\LaravelCurrency\Exceptions\ModelDoesNotHaveCurrency();
+        }
 
         $this->mergeCasts([$this->getCurrencyAttribute() => ConvertCurrency::class]);
     }
 
     public function currencies(): BelongsToMany
     {
-        return $this->morphToMany(Currency::class, "model", "model_has_currencies", "model_id", "currency_id");
+        return $this->morphToMany(Currency::class, 'model', 'model_has_currencies', 'model_id', 'currency_id');
     }
 
     public function setCurrency(Currency $currency)
     {
-        if ($this->getCurrency()) $this->removeUserCurrency();
+        if ($this->getCurrency()) {
+            $this->removeUserCurrency();
+        }
 
         $this->currencies()->attach($currency);
 
         return $this;
     }
 
-    public function removeCurrency(Currency|null $currency = null)
+    public function removeCurrency(Currency $currency = null)
     {
-        if (isset($currency)) return $this->currencies()->detach($currency);
+        if (isset($currency)) {
+            return $this->currencies()->detach($currency);
+        }
 
         return $this->currencies()->detach();
     }
 
-    public function getCurrency(): Currency|null
+    public function getCurrency(): ?Currency
     {
         return $this->currencies()->first();
     }
