@@ -44,7 +44,7 @@
         "test": [
             "./vendor/bin/phpunit"
         ],
-        "format": [
+        "utilize": [
             "./vendor/bin/pint"
         ]
     },

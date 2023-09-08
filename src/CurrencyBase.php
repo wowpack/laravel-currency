@@ -10,7 +10,7 @@ use Wowpack\LaravelCurrency\Models\Currency;
 
 class CurrencyBase implements Base
 {
-    protected Currency $defaultCurrency;
+    protected ?Currency $defaultCurrency;
 
     public function convert(Currency $from, Currency $to): Convertible
     {
@@ -22,20 +22,20 @@ class CurrencyBase implements Base
         return Currency::create($data);
     }
 
-    public function getDefaultCurrency(string $guard = null): Currency
+    public function getDefaultCurrency(string $guard = null): ?Currency
     {
         if (! isset($this->defaultCurrency)) {
             $this->defaultCurrency = Currency::first();
             $auth = Auth::guard($guard);
 
             if (isset($guard) && $auth->check()) {
-                $this->defaultCurrency = $auth->user()->getCurrency() ?? $this->defaultCurrency;
+                $this->defaultCurrency = optional($auth->user())->getCurrency() ?? $this->defaultCurrency;
             } else {
                 foreach (array_keys(config('auth.guards')) as $name) {
                     $auth = Auth::guard($name);
 
                     if ($auth->check() && $auth->user() instanceof UserHasCurrency) {
-                        $this->defaultCurrency = $auth->user()->getCurrency() ?? $this->defaultCurrency;
+                        $this->defaultCurrency = optional($auth->user())->getCurrency() ?? $this->defaultCurrency;
                         break;
                     }
                 }
