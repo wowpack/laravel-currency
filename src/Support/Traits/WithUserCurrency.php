@@ -9,11 +9,24 @@ use Wowpack\LaravelCurrency\Models\Currency;
 
 trait WithUserCurrency
 {
-    public function __construct()
+    protected static array $implements;
+
+    protected static function boot(): void
     {
-        if (! ($this instanceof Authenticatable && $this instanceof UserHasCurrency)) {
+        static::bootUserCurrencyParent();
+    }
+
+    protected static function bootUserCurrencyParent(): void
+    {
+        parent::boot();
+
+        static::$implements = class_implements(static::class);
+
+        if (! (isset(static::$implements[Authenticatable::class]) && isset(static::$implements[UserHasCurrency::class]))) {
             throw new \Wowpack\LaravelCurrency\Exceptions\UserDoesNotHaveCurrency();
         }
+
+        static::mergeCasts([static::getCurrencyAttribute() => ConvertCurrency::class]);
     }
 
     public function currencies(): BelongsToMany
