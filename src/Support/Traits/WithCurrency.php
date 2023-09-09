@@ -61,7 +61,7 @@ trait WithCurrency
 
     protected static function booted()
     {
-        static::bootCurrencyParent();
+        static::bootedCurrencyParent();
     }
 
     protected static function bootedCurrencyParent(): void
