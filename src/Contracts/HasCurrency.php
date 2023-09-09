@@ -4,5 +4,5 @@ namespace Wowpack\LaravelCurrency\Contracts;
 
 interface HasCurrency
 {
-    public function getCurrencyAttribute(): string;
+    public static function getCurrencyAttribute(): string;
 }

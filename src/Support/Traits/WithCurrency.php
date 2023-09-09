@@ -2,7 +2,6 @@
 
 namespace Wowpack\LaravelCurrency\Support\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Wowpack\LaravelCurrency\Casts\ConvertCurrency;
 use Wowpack\LaravelCurrency\Contracts\HasCurrency;
@@ -10,13 +9,24 @@ use Wowpack\LaravelCurrency\Models\Currency;
 
 trait WithCurrency
 {
-    public function __construct()
+    protected static array $implements;
+
+    protected static function boot(): void
     {
-        if (! ($this instanceof Model && $this instanceof HasCurrency)) {
+        static::bootCurrencyParent();
+    }
+
+    protected static function bootCurrencyParent(): void
+    {
+        parent::boot();
+
+        static::$implements = class_implements(static::class);
+
+        if (! isset(static::$implements[HasCurrency::class])) {
             throw new \Wowpack\LaravelCurrency\Exceptions\ModelDoesNotHaveCurrency();
         }
 
-        $this->mergeCasts([$this->getCurrencyAttribute() => ConvertCurrency::class]);
+        static::mergeCasts([static::getCurrencyAttribute() => ConvertCurrency::class]);
     }
 
     public function currencies(): BelongsToMany
@@ -51,25 +61,11 @@ trait WithCurrency
 
     protected static function booted()
     {
-        static::created(function (Model $model) {
-        });
+        static::bootCurrencyParent();
+    }
 
-        static::updating(function (Model $model) {
-        });
-
-        static::updated(function (Model $model) {
-        });
-
-        static::saving(function (Model $model) {
-        });
-
-        static::saved(function (Model $model) {
-        });
-
-        static::deleting(function (Model $model) {
-        });
-
-        static::deleted(function (Model $model) {
-        });
+    protected static function bootedCurrencyParent(): void
+    {
+        //
     }
 }
