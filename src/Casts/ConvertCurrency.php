@@ -9,7 +9,6 @@ use Wowpack\LaravelCurrency\Contracts\HasCurrency;
 use Wowpack\LaravelCurrency\Contracts\UseCurrencyValue;
 use Wowpack\LaravelCurrency\Converter;
 use Wowpack\LaravelCurrency\Models\Currency;
-use Wowpack\LaravelCurrency\Support\Facades\Currency as CurrencyFacade;
 
 class ConvertCurrency implements CastsAttributes
 {
@@ -17,7 +16,7 @@ class ConvertCurrency implements CastsAttributes
 
     public function __construct()
     {
-        $this->current = CurrencyFacade::getDefaultCurrency();
+        $this->current = app()->currency()->default();
     }
 
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed

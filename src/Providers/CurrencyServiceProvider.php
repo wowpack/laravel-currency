@@ -21,11 +21,9 @@ class CurrencyServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->app->bind(Base::class, fn () => new CurrencyBase);
+        $this->app->singleton(Base::class, fn () => new CurrencyBase);
 
         optional($this->app)->macro('currency', fn () => app(Base::class));
-
-        optional($this->app)->macro('defaultCurrency', fn (string $guard = null) => app()->currency()->getDefaultCurrency($guard));
     }
 
     public function boot(): void
