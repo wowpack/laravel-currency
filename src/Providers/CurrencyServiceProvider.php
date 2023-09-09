@@ -23,9 +23,9 @@ class CurrencyServiceProvider extends ServiceProvider
     {
         $this->app->bind(Base::class, fn () => new CurrencyBase);
 
-        $this->app->macro('currency', fn () => app(Base::class));
+        optional($this->app)->macro('currency', fn () => app(Base::class));
 
-        $this->app->macro('defaultCurrency', fn (string $guard = null) => app()->currency()->getDefaultCurrency($guard));
+        optional($this->app)->macro('defaultCurrency', fn (string $guard = null) => app()->currency()->getDefaultCurrency($guard));
     }
 
     public function boot(): void
