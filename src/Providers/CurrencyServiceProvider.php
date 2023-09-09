@@ -23,7 +23,7 @@ class CurrencyServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Base::class, fn () => new CurrencyBase);
 
-        optional($this->app)->macro('currency', fn () => app(Base::class));
+        app()->macro('currency', fn () => app(Base::class));
     }
 
     public function boot(): void

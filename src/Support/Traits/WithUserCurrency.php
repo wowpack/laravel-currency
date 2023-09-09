@@ -25,8 +25,6 @@ trait WithUserCurrency
         if (! (isset(static::$implements[Authenticatable::class]) && isset(static::$implements[UserHasCurrency::class]))) {
             throw new \Wowpack\LaravelCurrency\Exceptions\UserDoesNotHaveCurrency();
         }
-
-        static::mergeCasts([static::getCurrencyAttribute() => ConvertCurrency::class]);
     }
 
     public function currencies(): BelongsToMany
