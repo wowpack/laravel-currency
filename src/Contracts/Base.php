@@ -6,11 +6,11 @@ use Wowpack\LaravelCurrency\Models\Currency;
 
 interface Base
 {
-    public function guard(?string $name): static;
-
     public function convert(Currency $from, Currency $to): Convertible;
 
     public function create(...$data): Currency;
 
-    public function default(?string $guard): ?Currency;
+    public function setDefault(Currency $currency): static;
+
+    public function default(): ?Currency;
 }
