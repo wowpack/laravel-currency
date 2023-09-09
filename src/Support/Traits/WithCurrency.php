@@ -11,6 +11,19 @@ trait WithCurrency
 {
     protected static array $implements;
 
+    public function __construct(array $attributes = [])
+    {
+        $this->bootIfNotBooted();
+
+        $this->initializeTraits();
+
+        $this->syncOriginal();
+
+        $this->fill($attributes);
+
+        $this->mergeCasts([static::getCurrencyAttribute() => ConvertCurrency::class]);
+    }
+
     protected static function boot(): void
     {
         static::bootCurrencyParent();
@@ -25,8 +38,6 @@ trait WithCurrency
         if (! isset(static::$implements[HasCurrency::class])) {
             throw new \Wowpack\LaravelCurrency\Exceptions\ModelDoesNotHaveCurrency();
         }
-
-        static::mergeCasts([static::getCurrencyAttribute() => ConvertCurrency::class]);
     }
 
     public function currencies(): BelongsToMany
