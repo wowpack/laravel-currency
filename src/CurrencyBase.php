@@ -2,15 +2,18 @@
 
 namespace Wowpack\LaravelCurrency;
 
-use Illuminate\Support\Facades\Auth;
 use Wowpack\LaravelCurrency\Contracts\Base;
 use Wowpack\LaravelCurrency\Contracts\Convertible;
-use Wowpack\LaravelCurrency\Contracts\UserHasCurrency;
 use Wowpack\LaravelCurrency\Models\Currency;
 
 class CurrencyBase implements Base
 {
-    protected Currency $defaultCurrency;
+    protected ?Currency $currency;
+
+    public function __construct()
+    {
+        $this->currency = Currency::first();
+    }
 
     public function convert(Currency $from, Currency $to): Convertible
     {
@@ -22,26 +25,15 @@ class CurrencyBase implements Base
         return Currency::create($data);
     }
 
-    public function getDefaultCurrency(string $guard = null): Currency
+    public function setDefault(Currency $currency): static
     {
-        if (! isset($this->defaultCurrency)) {
-            $this->defaultCurrency = Currency::first();
-            $auth = Auth::guard($guard);
+        $this->currency = $currency;
 
-            if (isset($guard) && $auth->check()) {
-                $this->defaultCurrency = $auth->user()->getCurrency() ?? $this->defaultCurrency;
-            } else {
-                foreach (array_keys(config('auth.guards')) as $name) {
-                    $auth = Auth::guard($name);
+        return $this;
+    }
 
-                    if ($auth->check() && $auth->user() instanceof UserHasCurrency) {
-                        $this->defaultCurrency = $auth->user()->getCurrency() ?? $this->defaultCurrency;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $this->defaultCurrency;
+    public function default(): ?Currency
+    {
+        return $this->currency;
     }
 }

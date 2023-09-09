@@ -10,5 +10,7 @@ interface Base
 
     public function create(...$data): Currency;
 
-    public function getDefaultCurrency(?string $guard): Currency;
+    public function setDefault(Currency $currency): static;
+
+    public function default(): ?Currency;
 }

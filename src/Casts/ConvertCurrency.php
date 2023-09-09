@@ -9,15 +9,20 @@ use Wowpack\LaravelCurrency\Contracts\HasCurrency;
 use Wowpack\LaravelCurrency\Contracts\UseCurrencyValue;
 use Wowpack\LaravelCurrency\Converter;
 use Wowpack\LaravelCurrency\Models\Currency;
-use Wowpack\LaravelCurrency\Support\Facades\Currency as CurrencyFacade;
 
 class ConvertCurrency implements CastsAttributes
 {
-    protected Currency $current;
+    protected ?Currency $current;
 
     public function __construct()
     {
-        $this->current = CurrencyFacade::getDefaultCurrency();
+        if (! $this->current = app()->currency()->default()) {
+            if (app()->isProduction()) {
+                abort(403, 'Default currency is required!');
+            } else {
+                throw new \Exception('No default currency set!!');
+            }
+        }
     }
 
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed

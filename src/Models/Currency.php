@@ -23,7 +23,7 @@ class Currency extends Model implements HasCurrency, UseCurrencyValue
         'value',
     ];
 
-    public function getCurrencyAttribute(): string
+    public static function getCurrencyAttribute(): string
     {
         return 'value';
     }
