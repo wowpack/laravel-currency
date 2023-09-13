@@ -15,7 +15,6 @@ class Currency extends Model implements \Wowpack\LaravelCurrency\Contracts\Curre
 
     protected $fillable = [
         'name',
-        'short_form',
         'code',
         'symbol',
         'value',
