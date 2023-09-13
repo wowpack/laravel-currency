@@ -4,10 +4,9 @@ namespace Wowpack\LaravelCurrency\Support\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Wowpack\LaravelCurrency\Casts\ConvertCurrency;
-use Wowpack\LaravelCurrency\Contracts\HasCurrency;
 use Wowpack\LaravelCurrency\Models\Currency;
 
-trait WithCurrency
+trait HasCurrency
 {
     protected static array $implements;
 
@@ -35,7 +34,7 @@ trait WithCurrency
 
         static::$implements = class_implements(static::class);
 
-        if (! isset(static::$implements[HasCurrency::class])) {
+        if (!isset(static::$implements[HasCurrency::class])) {
             throw new \Wowpack\LaravelCurrency\Exceptions\ModelDoesNotHaveCurrency();
         }
     }

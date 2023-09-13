@@ -4,5 +4,5 @@ namespace Wowpack\LaravelCurrency\Contracts;
 
 interface CastableCurrencyValue
 {
-    public function getCurrencyCastAttributes(): array|string;
+    public function getCurrencyValueCastAttributes(): array|string;
 }
