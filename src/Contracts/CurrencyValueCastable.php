@@ -2,7 +2,7 @@
 
 namespace Wowpack\LaravelCurrency\Contracts;
 
-interface CastableCurrencyValue
+interface CurrencyValueCastable
 {
     public function getCurrencyValueCastAttributes(): array|string;
 }

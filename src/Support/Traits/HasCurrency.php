@@ -3,12 +3,15 @@
 namespace Wowpack\LaravelCurrency\Support\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 use Wowpack\LaravelCurrency\Casts\ConvertCurrency;
+use Wowpack\LaravelCurrency\Contracts\CurrencyCastable;
+use Wowpack\LaravelCurrency\Contracts\CurrencyValueCastable;
 use Wowpack\LaravelCurrency\Models\Currency;
 
 trait HasCurrency
 {
-    protected static array $implements;
+    protected Collection $castables, $castableAttributes, $valueCastableAttributes;
 
     public function __construct(array $attributes = [])
     {
@@ -20,7 +23,9 @@ trait HasCurrency
 
         $this->fill($attributes);
 
-        $this->mergeCasts([static::getCurrencyAttribute() => ConvertCurrency::class]);
+        if ($this instanceof CurrencyCastable || $this instanceof CurrencyValueCastable) {
+            $this->mergeCurrencyCasts();
+        }
     }
 
     protected static function boot(): void
@@ -31,12 +36,35 @@ trait HasCurrency
     protected static function bootCurrencyParent(): void
     {
         parent::boot();
+    }
 
-        static::$implements = class_implements(static::class);
-
-        if (!isset(static::$implements[HasCurrency::class])) {
-            throw new \Wowpack\LaravelCurrency\Exceptions\ModelDoesNotHaveCurrency();
+    private function parseCastableAttributes(array|string $data): array
+    {
+        if (is_string($data)) {
+            $data = str($data)->explode(',');
         }
+
+        return $data;
+    }
+
+    protected function mergeCurrencyCasts(): void
+    {
+        $this->castables = new Collection;
+        $this->castableAttributes = new Collection;
+        $this->valueCastableAttributes = new Collection;
+
+        if ($this instanceof CurrencyCastable) {
+            $this->castableAttributes = collect($this->getCurrencyCastAttributes());
+        }
+
+        if ($this instanceof CurrencyValueCastable) {
+            $this->valueCastableAttributes = collect($this->getCurrencyValueCastAttributes());
+        }
+
+        $this->castables = $this->castables->merge($this->castableAttributes)->merge($this->valueCastableAttributes)->unique();
+
+        $this->mergeCasts($this->castables->map(fn ($value) => ['key' => $value, 'value' => ConvertCurrency::class])
+            ->pluck('value', 'key')->toArray());
     }
 
     public function currencies(): BelongsToMany
