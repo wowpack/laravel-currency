@@ -16,7 +16,7 @@ class ConvertCurrency implements CastsAttributes
 
     public function __construct()
     {
-        if (!$this->current = app()->currency()->default()) {
+        if (! $this->current = app()->currency()->default()) {
             if (app()->isProduction()) {
                 abort(403, 'Default currency not found!');
             } else {

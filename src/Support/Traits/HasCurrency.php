@@ -7,11 +7,16 @@ use Illuminate\Support\Collection;
 use Wowpack\LaravelCurrency\Casts\ConvertCurrency;
 use Wowpack\LaravelCurrency\Contracts\CurrencyCastable;
 use Wowpack\LaravelCurrency\Contracts\CurrencyValueCastable;
+use Wowpack\LaravelCurrency\Contracts\HasCurrencyForeignKey;
 use Wowpack\LaravelCurrency\Models\Currency;
 
 trait HasCurrency
 {
-    protected Collection $castables, $castableAttributes, $valueCastableAttributes;
+    protected Collection $castables;
+
+    protected Collection $castableAttributes;
+
+    protected Collection $valueCastableAttributes;
 
     public function __construct(array $attributes = [])
     {
@@ -67,13 +72,13 @@ trait HasCurrency
             ->pluck('value', 'key')->toArray());
     }
 
-    public function castBy(string $attr): string|null
+    public function castBy(string $attr): ?string
     {
-        if ($this->valueCastableAttributes->search($attr) == true) {
+        if ($this->valueCastableAttributes->contains($attr) == true) {
             return CurrencyValueCastable::class;
         }
 
-        if ($this->castableAttributes->search($attr) == true) {
+        if ($this->castableAttributes->contains($attr) == true) {
             return CurrencyValueCastable::class;
         }
 
@@ -85,28 +90,33 @@ trait HasCurrency
         return $this->morphToMany(Currency::class, 'model', 'model_has_currencies', 'model_id', 'currency_id');
     }
 
-    public function setCurrency(Currency $currency)
+    public function attachCurrency(Currency $currency = null): ?Currency
     {
-        if ($this->getCurrency()) {
-            $this->removeUserCurrency();
-        }
-
         $this->currencies()->attach($currency);
 
-        return $this;
+        return $currency;
     }
 
-    public function removeCurrency(Currency $currency = null)
+    public function detachCurrency(Currency $currency = null)
     {
-        if (isset($currency)) {
-            return $this->currencies()->detach($currency);
+        $this->currencies()->detach($currency);
+
+        return $this->currencies()->get();
+    }
+
+    public function setDefaultCurrency(Currency $currency): Currency
+    {
+        $this->currencies()->detach();
+
+        return $this->attachCurrency($currency);
+    }
+
+    public function getDefaultCurrency(): ?Currency
+    {
+        if ($this instanceof HasCurrencyForeignKey) {
+            return $this->currencies()->where('id', $this->getAttribute($this->getCurrencyForeignAttribute()))->first();
         }
 
-        return $this->currencies()->detach();
-    }
-
-    public function getCurrency(): ?Currency
-    {
         return $this->currencies()->first();
     }
 

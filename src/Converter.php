@@ -24,7 +24,7 @@ class Converter implements Convertible
     {
         if (! $this->computed) {
             $value = $this->from->getRawOriginal(
-                $this->from->getCurrencyAttribute()
+                $this->from->getValueAttribute()
             );
             $this->calculator->input($value * $this->amount);
         }
@@ -42,7 +42,7 @@ class Converter implements Convertible
     public function save(): bool
     {
         $this->to->setRawAttributes([
-            $this->to->getCurrencyAttribute() => $this->calculator->getValue(),
+            $this->to->getValueAttribute() => $this->calculator->getValue(),
         ], true);
 
         return $this->to->save();

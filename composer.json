@@ -41,12 +41,8 @@
         }
     },
     "scripts": {
-        "test": [
-            "./vendor/bin/phpunit"
-        ],
-        "utilize": [
-            "./vendor/bin/pint"
-        ]
+        "test": "@php ./vendor/bin/phpunit",
+        "utilize": "@php ./vendor/bin/pint"
     },
     "config": {
         "optimize-autoloader": true,
