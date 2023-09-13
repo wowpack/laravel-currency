@@ -18,13 +18,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('user_has_currencies', function (Blueprint $table) {
-            $table->morphs('user');
-            $table->foreignId('currency_id')
-                ->references('id')->on('currencies')
-                ->cascadeOnDelete();
-        });
-
         Schema::create('model_has_currencies', function (Blueprint $table) {
             $table->morphs('model');
             $table->foreignId('currency_id')
@@ -36,8 +29,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('currencies');
-
-        Schema::dropIfExists('user_has_currencies');
 
         Schema::dropIfExists('model_has_currencies');
     }
