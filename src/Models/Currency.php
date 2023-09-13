@@ -3,9 +3,10 @@
 namespace Wowpack\LaravelCurrency\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Wowpack\LaravelCurrency\Contracts\CastableCurrencyValue;
 use Wowpack\LaravelCurrency\Support\Traits\HasCurrency;
 
-class Currency extends Model implements \Wowpack\LaravelCurrency\Contracts\Currency
+class Currency extends Model implements \Wowpack\LaravelCurrency\Contracts\Currency, CastableCurrencyValue
 {
     use HasCurrency;
 
@@ -19,4 +20,14 @@ class Currency extends Model implements \Wowpack\LaravelCurrency\Contracts\Curre
         'symbol',
         'value',
     ];
+
+    public function getValueAttribute(): string
+    {
+        return 'value';
+    }
+
+    public function getCurrencyValueCastAttributes(): array|string
+    {
+        return 'value';
+    }
 }
