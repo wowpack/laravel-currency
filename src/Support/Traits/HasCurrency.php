@@ -67,6 +67,19 @@ trait HasCurrency
             ->pluck('value', 'key')->toArray());
     }
 
+    public function castBy(string $attr): string|null
+    {
+        if ($this->valueCastableAttributes->search($attr) == true) {
+            return CurrencyValueCastable::class;
+        }
+
+        if ($this->castableAttributes->search($attr) == true) {
+            return CurrencyValueCastable::class;
+        }
+
+        return null;
+    }
+
     public function currencies(): BelongsToMany
     {
         return $this->morphToMany(Currency::class, 'model', 'model_has_currencies', 'model_id', 'currency_id');
