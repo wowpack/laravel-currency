@@ -35,7 +35,7 @@ class ConvertCurrency implements CastsAttributes
 
             return $calculator->getAmount();
         } elseif ($castingBy == CurrencyCastable::class) {
-            $converter = new Converter($model->getCurrency(), $this->current);
+            $converter = new Converter($model->getDefaultCurrency(), $this->current);
             $converter->amount($value);
 
             return $converter->getResult()['amount'];
@@ -54,7 +54,7 @@ class ConvertCurrency implements CastsAttributes
 
             return $calculator->getValue();
         } elseif ($castingBy == CurrencyCastable::class) {
-            $converter = new Converter($this->current, $model->getCurrency());
+            $converter = new Converter($this->current, $model->getDefaultCurrency());
             $converter->amount($value);
 
             return $converter->getResult()['amount'];

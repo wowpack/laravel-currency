@@ -2,6 +2,7 @@
 
 namespace Wowpack\LaravelCurrency\Support\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use Wowpack\LaravelCurrency\Casts\ConvertCurrency;
@@ -41,6 +42,12 @@ trait HasCurrency
     protected static function bootCurrencyParent(): void
     {
         parent::boot();
+
+        static::created(function (Model $model) {
+            if ($model instanceof CurrencyCastable) {
+                optional($model)->setDefaultCurrency(app()->currency()->default());
+            }
+        });
     }
 
     private function parseCastableAttributes(array|string $data): array
@@ -74,12 +81,12 @@ trait HasCurrency
 
     public function castBy(string $attr): ?string
     {
-        if ($this->valueCastableAttributes->contains($attr) == true) {
+        if ($this->valueCastableAttributes->contains($attr)) {
             return CurrencyValueCastable::class;
         }
 
-        if ($this->castableAttributes->contains($attr) == true) {
-            return CurrencyValueCastable::class;
+        if ($this->castableAttributes->contains($attr)) {
+            return CurrencyCastable::class;
         }
 
         return null;
@@ -117,7 +124,7 @@ trait HasCurrency
             return $this->currencies()->where('id', $this->getAttribute($this->getCurrencyForeignAttribute()))->first();
         }
 
-        return $this->currencies()->first();
+        return $this->currencies()->first() ?? app()->currency()->default();
     }
 
     protected static function booted()

@@ -17,7 +17,6 @@ class Converter implements Convertible
     public function __construct(protected Currency $from, protected Currency $to)
     {
         $this->calculator = new Calculator($to);
-        $this->calculate();
     }
 
     protected function calculate(): static
@@ -36,13 +35,13 @@ class Converter implements Convertible
     {
         $this->amount = $amount;
 
-        return $this;
+        return $this->calculate();
     }
 
     public function save(): bool
     {
         $this->to->setRawAttributes([
-            $this->to->getValueAttribute() => $this->calculator->getValue(),
+            $this->to->getValueAttribute() => $this->calculate()->calculator->getValue(),
         ], true);
 
         return $this->to->save();
@@ -50,7 +49,7 @@ class Converter implements Convertible
 
     public function getResult(): array
     {
-        return $this->calculator->getResult();
+        return $this->calculate()->calculator->getResult();
     }
 
     public function toArray(): array
