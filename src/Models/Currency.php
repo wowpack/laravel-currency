@@ -3,13 +3,12 @@
 namespace Wowpack\LaravelCurrency\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Wowpack\LaravelCurrency\Contracts\HasCurrency;
-use Wowpack\LaravelCurrency\Contracts\UseCurrencyValue;
-use Wowpack\LaravelCurrency\Support\Traits\WithCurrency;
+use Wowpack\LaravelCurrency\Contracts\CurrencyValueCastable;
+use Wowpack\LaravelCurrency\Support\Traits\HasCurrency;
 
-class Currency extends Model implements HasCurrency, UseCurrencyValue
+class Currency extends Model implements \Wowpack\LaravelCurrency\Contracts\Currency, CurrencyValueCastable
 {
-    use WithCurrency;
+    use HasCurrency;
 
     protected $table = 'currencies';
 
@@ -17,13 +16,17 @@ class Currency extends Model implements HasCurrency, UseCurrencyValue
 
     protected $fillable = [
         'name',
-        'short_form',
         'code',
         'symbol',
         'value',
     ];
 
-    public static function getCurrencyAttribute(): string
+    public function getValueAttribute(): string
+    {
+        return 'value';
+    }
+
+    public function getCurrencyValueCastAttributes(): array|string
     {
         return 'value';
     }

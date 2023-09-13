@@ -5,8 +5,8 @@ namespace Wowpack\LaravelCurrency\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Wowpack\LaravelCurrency\Calculator;
-use Wowpack\LaravelCurrency\Contracts\HasCurrency;
-use Wowpack\LaravelCurrency\Contracts\UseCurrencyValue;
+use Wowpack\LaravelCurrency\Contracts\CurrencyCastable;
+use Wowpack\LaravelCurrency\Contracts\CurrencyValueCastable;
 use Wowpack\LaravelCurrency\Converter;
 use Wowpack\LaravelCurrency\Models\Currency;
 
@@ -18,44 +18,48 @@ class ConvertCurrency implements CastsAttributes
     {
         if (! $this->current = app()->currency()->default()) {
             if (app()->isProduction()) {
-                abort(403, 'Default currency is required!');
+                abort(403, 'Default currency not found!');
             } else {
-                throw new \Exception('No default currency set!!');
+                throw new \Exception('Unable to read default currency on null!');
             }
         }
     }
 
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        if (! ($model instanceof HasCurrency) && $model->getCurrencyAttribute() != $key) {
-            throw new \Exception();
-        } elseif ($model instanceof UseCurrencyValue) {
+        $castingBy = $model->castBy($key);
+
+        if ($castingBy == CurrencyValueCastable::class) {
             $calculator = new Calculator($this->current);
             $calculator->input($value);
 
             return $calculator->getAmount();
-        } else {
-            $converter = new Converter($model->getCurrency(), $this->current);
+        } elseif ($castingBy == CurrencyCastable::class) {
+            $converter = new Converter($model->getDefaultCurrency(), $this->current);
             $converter->amount($value);
 
             return $converter->getResult()['amount'];
         }
+
+        return $value;
     }
 
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        if (! ($model instanceof HasCurrency) && $model->getCurrencyAttribute() != $key) {
-            throw new \Exception();
-        } elseif ($model instanceof UseCurrencyValue) {
+        $castingBy = $model->castBy($key);
+
+        if ($castingBy == CurrencyValueCastable::class) {
             $calculator = new Calculator($this->current);
             $calculator->amount($value);
 
             return $calculator->getValue();
-        } else {
-            $converter = new Converter($this->current, $model->getCurrency());
+        } elseif ($castingBy == CurrencyCastable::class) {
+            $converter = new Converter($this->current, $model->getDefaultCurrency());
             $converter->amount($value);
 
             return $converter->getResult()['amount'];
         }
+
+        return $value;
     }
 }

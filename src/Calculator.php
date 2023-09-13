@@ -27,10 +27,10 @@ class Calculator implements Calculable
             return $this;
         } elseif (isset($this->value)) {
             $this->result_value = $this->value;
-            $this->result_amount = $this->value / $this->currency->getRawOriginal($this->currency->getCurrencyAttribute());
+            $this->result_amount = $this->value / $this->currency->getRawOriginal($this->currency->getValueAttribute());
         } elseif (isset($this->amount)) {
             $this->result_amount = $this->amount;
-            $this->result_value = $this->amount * $this->currency->getRawOriginal($this->currency->getCurrencyAttribute());
+            $this->result_value = $this->amount * $this->currency->getRawOriginal($this->currency->getValueAttribute());
         } else {
             throw new \InvalidArgumentException('No value/amount provided');
         }
@@ -71,7 +71,7 @@ class Calculator implements Calculable
     public function save(): bool
     {
         $this->currency->setRawAttributes([
-            $this->currency->getCurrencyAttribute() => $this->getValue(),
+            $this->currency->getValueAttribute() => $this->getValue(),
         ], true);
 
         return $this->currency->save();
