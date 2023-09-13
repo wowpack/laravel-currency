@@ -1,5 +1,6 @@
 # Package Related
 /vendor
+composer.lock
 
 # Package Test related
 /.phpunit.cache
