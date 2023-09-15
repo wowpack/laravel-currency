@@ -48,6 +48,8 @@ trait HasCurrency
                 optional($model)->setDefaultCurrency(app()->currency()->default());
             }
         });
+
+        static::deleting(fn (Model $model) => $model->currencies()->detach());
     }
 
     private function parseCastableAttributes(array|string $data): array
